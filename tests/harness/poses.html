@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --paper:#f6f1e7; --line:#d9d2c4; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e9e3d7; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; color:#242733; }
+  .page { display:grid; grid-template-columns:repeat(4, 380px); gap:18px; padding:18px; }
+  .tile { position:relative; width:380px; height:340px; background:var(--paper); border:2px solid var(--line); border-radius:14px; overflow:hidden; }
+  .tile canvas { position:absolute; left:0; top:0; width:380px; height:300px; }
+  .tile .label { position:absolute; left:10px; bottom:8px; font-size:12px; font-weight:700; letter-spacing:.4px; color:#5b5f6b; display:flex; gap:6px; align-items:center; }
+  .tile .label em { font-style:normal; font-size:10px; color:#989cab; font-weight:500; }
+  .tile.perch::after { content:""; position:absolute; left:0; right:0; top:190px; height:2px; background:repeating-linear-gradient(90deg,#c9c0ae 0 8px,transparent 8px 16px); }
+  .tile.perch .label { bottom:8px; }
+  .note { padding:0 18px 8px; font-size:12px; color:#6f7380; }
+</style>
+</head>
+<body>
+<div class="note">DSH desktop pet · pose sheet · <span id="meta"></span></div>
+<div class="page" id="page"></div>
+<script type="module">
+import { PetArt } from "../pet/art.js";
+
+const params = new URLSearchParams(location.search);
+const character = params.get("character") === "crab" ? "crab" : "whale";
+const page = Number(params.get("page") || 0);
+const mode = params.get("mode") === "perch" ? "perch" : "desk";
+const all = [
+  ["idle", "发呆"], ["blink", "眨眼"], ["happy", "开心"], ["petted", "被摸头"],
+  ["poke", "被戳"], ["angry", "生气"], ["eat", "吃东西"], ["hungry", "饿了"],
+  ["sick", "生病"], ["sleep", "睡觉"], ["type", "陪 DSH 干活"], ["wait", "等你确认"],
+  ["celebrate", "庆祝"], ["sweat", "出错冒汗"], ["drag", "被拎起来"], ["travel", "旅行中(空)"],
+];
+const items = all.slice(page * 8, page * 8 + 8);
+document.getElementById("meta").textContent = `${character} · ${mode} · page ${page + 1}`;
+const host = document.getElementById("page");
+for (const [pose, label] of items) {
+  const tile = document.createElement("div");
+  tile.className = "tile" + (mode === "perch" ? " perch" : "");
+  const canvas = document.createElement("canvas");
+  tile.appendChild(canvas);
+  const tag = document.createElement("div");
+  tag.className = "label";
+  tag.innerHTML = `<span>${pose}</span><em>${label}</em>`;
+  tile.appendChild(tag);
+  host.appendChild(tile);
+  if (pose === "travel") { tag.style.bottom = "auto"; tag.style.top = "10px"; continue; }
+  const art = new PetArt(canvas);
+  const particles = [];
+  if (pose === "petted" || pose === "happy") {
+    for (let i = 0; i < 3; i++) particles.push({ kind:"heart", x:62+i*22, y:50-i*8, life:900, maxLife:1200, color:"#FF7E93" });
+  }
+  if (pose === "celebrate") {
+    const colors = ["#5B7CFF","#FF7A45","#FFD166","#5FBF8F","#FF9FB2"];
+    for (let i = 0; i < 22; i++) particles.push({ kind:"confetti", x:40+Math.random()*100, y:30+Math.random()*40, life:1200, maxLife:1600, color:colors[i%colors.length] });
+  }
+  if (pose === "eat") {
+    for (let i = 0; i < 6; i++) particles.push({ kind:"crumb", x:88+i*3, y:88, life:700, maxLife:700 });
+  }
+  const look = pose === "wait" ? { x: 1.2, y: -1.6 } : { x: 0, y: 0 };
+  art.draw({ character, pose, t: 1.35, mode, clipCss: mode === "perch" ? 190 : 300, lookX: look.x, lookY: look.y, particles });
+}
+</script>
+</body>
+</html>

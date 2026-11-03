@@ -1,0 +1,5 @@
+# 官方 DSH 安装包备份（DeepSeek 的文件，不公开；install 脚本在本机生成）
+backup/
+*.pre-pet
+node_modules/
+.DS_Store

@@ -1,0 +1,280 @@
+#dshpet-root {
+  --ink: #23252d;
+  --ink-soft: #4d515e;
+  --paper: #fffdf7;
+  --paper-2: #fff7e8;
+  --line: #23252d;
+  --blue: #2563d8;
+  --blue-deep: #3350d9;
+  --coral: #ff7a45;
+  --pink: #ff9fb2;
+  --green: #5fbf8f;
+  --gold: #f2b84b;
+  --shadow: 0 7px 0 rgba(24, 28, 40, 0.16), 0 10px 24px rgba(24, 28, 40, 0.14);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+#dshpet-root *, #dshpet-root { box-sizing: border-box; }
+
+#dshpet-root, #dshpet-root {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 30;
+  background: transparent;
+  pointer-events: none;
+  font-family: var(--font);
+  color: var(--ink);
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+#dshpet-root #dshpet-stage {
+  position: relative;
+  width: 760px;
+  height: 420px;
+  overflow: hidden;
+}
+
+#dshpet-root #dshpet-pet {
+  position: absolute;
+  inset: 0;
+  width: 760px;
+  height: 300px;
+  display: block;
+  image-rendering: pixelated;  pointer-events: none;
+}
+
+#dshpet-root #dshpet-stage[data-mode="hidden"] { visibility: hidden; }
+#dshpet-root #dshpet-stage[data-mode="perch"] #dshpet-pet { cursor: pointer; }
+
+#dshpet-root .panel, #dshpet-root .bubble {
+  position: absolute;
+  background: var(--paper);
+  border: 2.5px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  pointer-events: auto;
+}
+
+#dshpet-root [hidden] { display: none !important; }
+
+/* ---------- speech bubble ---------- */
+#dshpet-root .bubble {
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+  min-width: 74px;
+  max-width: 246px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+  border-radius: 14px;
+  z-index: 8;
+  animation: dshpet-bubble-in 180ms cubic-bezier(.2, 1.4, .4, 1) both;
+}
+#dshpet-root .bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 10px;
+  height: 10px;
+  background: var(--paper);
+  border-right: 2.5px solid var(--line);
+  border-bottom: 2.5px solid var(--line);
+  transform: translateX(-50%) rotate(45deg);
+  border-bottom-right-radius: 2px;
+}
+#dshpet-root .bubble[data-tail="up"]::after {
+  top: -7px;
+  bottom: auto;
+  border: 0;
+  border-left: 2.5px solid var(--line);
+  border-top: 2.5px solid var(--line);
+}
+#dshpet-root .bubble-text { white-space: pre-wrap; }
+#dshpet-root .bubble-jump {
+  margin-left: 4px;
+  padding: 0 7px;
+  height: 20px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  vertical-align: 1px;
+}
+#dshpet-root .bubble-jump:active { transform: translateY(1px); }
+#dshpet-root .bubble.toast {
+  top: auto;
+  bottom: 10px;
+  min-width: 120px;
+  max-width: 320px;
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .28);
+  animation: dshpet-toast-in 180ms ease-out both;
+}
+#dshpet-root .bubble.toast::after { display: none; }
+
+@keyframes dshpet-bubble-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(5px) scale(.94); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+@keyframes dshpet-toast-in {
+  from { opacity: 0; transform: translate(-50%, 4px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---------- generic panel bits ---------- */
+#dshpet-root .card { width: 306px; left: 50%; top: 22px; transform: translateX(-50%); padding: 12px; z-index: 12; }
+#dshpet-root #dshpet-stage[data-mode="perch"] .card { top: 10px; }
+#dshpet-root .card-head { display: flex; align-items: flex-start; gap: 8px; }
+#dshpet-root .card-title { font-size: 15px; font-weight: 800; letter-spacing: .2px; display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+#dshpet-root .card-sub { font-size: 10.5px; font-weight: 500; color: #8b8f9c; letter-spacing: .1px; }
+#dshpet-root .icon-btn {
+  width: 24px; height: 24px; flex: none; border: 2px solid var(--line); border-radius: 8px;
+  background: var(--paper-2); color: var(--ink); font-size: 15px; line-height: 1; font-weight: 700;
+  cursor: pointer; padding: 0;
+}
+#dshpet-root .icon-btn:active { transform: translateY(1px); }
+
+#dshpet-root .bars { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+#dshpet-root .bar-row { display: grid; grid-template-columns: 46px 1fr 40px; align-items: center; gap: 7px; font-size: 11px; color: var(--ink-soft); }
+#dshpet-root .bar-track { height: 9px; background: #f0ece2; border: 1.5px solid var(--line); border-radius: 6px; overflow: hidden; }
+#dshpet-root .bar-fill { height: 100%; border-radius: 4px; transition: width 260ms ease; }
+#dshpet-root .bar-row b { text-align: right; font-size: 10.5px; color: var(--ink); font-variant-numeric: tabular-nums; }
+#dshpet-root .card-meta { margin-top: 9px; display: flex; justify-content: space-between; gap: 6px; font-size: 10.5px; color: #7a7e8c; }
+#dshpet-root .card-actions { margin-top: 10px; display: flex; gap: 6px; }
+#dshpet-root .card-actions button, #dshpet-root .settings-actions button {
+  flex: 1; height: 28px; border: 2px solid var(--line); border-radius: 9px; background: #fff;
+  font-family: var(--font); font-size: 11.5px; font-weight: 700; color: var(--ink); cursor: pointer; padding: 0 8px;
+}
+#dshpet-root .card-actions button:hover, #dshpet-root .settings-actions button:hover { background: var(--paper-2); }
+#dshpet-root .card-actions button:active, #dshpet-root .settings-actions button:active { transform: translateY(1px); }
+
+/* ---------- context menu ---------- */
+#dshpet-root .menu {
+  width: 186px; padding: 6px; z-index: 20;
+  animation: dshpet-menu-in 120ms ease-out both;
+}
+@keyframes dshpet-menu-in { from { opacity: 0; transform: translateY(-4px) scale(.97); } to { opacity: 1; transform: none; } }
+#dshpet-root .menu button {
+  width: 100%; height: 30px; display: flex; align-items: center; gap: 9px; padding: 0 8px;
+  border: 0; border-radius: 9px; background: transparent; font-family: var(--font);
+  font-size: 12.5px; font-weight: 600; color: var(--ink); cursor: pointer; text-align: left;
+}
+#dshpet-root .menu button:hover:not(:disabled) { background: #fff0d2; }
+#dshpet-root .menu button:disabled { opacity: .38; cursor: default; }
+#dshpet-root .menu .menu-icon {
+  width: 22px; height: 22px; flex: none; border: 1.8px solid var(--line); border-radius: 7px;
+  display: grid; place-items: center; font-size: 12px; background: var(--paper-2);
+}
+#dshpet-root .menu .menu-hint { margin-left: auto; font-size: 10px; color: #8b8f9c; font-weight: 500; }
+#dshpet-root .menu .menu-sep { height: 1px; background: #e8e2d5; margin: 4px 6px; }
+
+/* ---------- postcard ---------- */
+#dshpet-root .postcard {
+  width: 330px; padding: 10px; z-index: 24;
+  background: #fffaf0;
+  animation: dshpet-card-pop 260ms cubic-bezier(.2, 1.3, .4, 1) both;
+}
+@keyframes dshpet-card-pop { from { opacity: 0; transform: translateX(-50%) scale(.9) rotate(-1deg); } to { opacity: 1; transform: translateX(-50%) scale(1) rotate(-.4deg); } }
+#dshpet-root .postcard .postcard-scene { width: 100%; height: 118px; border: 2px solid var(--line); border-radius: 9px; overflow: hidden; background: #d9ecff; }
+#dshpet-root .postcard canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+#dshpet-root .postcard .postcard-head { display: flex; align-items: baseline; justify-content: space-between; margin: 8px 2px 0; }
+#dshpet-root .postcard .postcard-place { font-size: 15px; font-weight: 800; }
+#dshpet-root .postcard .postcard-date { font-size: 10px; color: #8b8f9c; }
+#dshpet-root .postcard .postcard-note { margin: 6px 2px 2px; font-size: 11.5px; line-height: 1.55; color: var(--ink-soft); }
+#dshpet-root .postcard .postcard-stamp {
+  position: absolute; right: 16px; top: 92px; width: 40px; height: 46px;
+  border: 2px dashed #c9bfa9; border-radius: 5px; background: #fff;
+  display: grid; place-items: center; font-size: 8px; color: #8b8f9c; transform: rotate(4deg);
+  overflow: hidden;
+}
+#dshpet-root .postcard .postcard-stamp b { font-size: 15px; color: var(--coral); }
+#dshpet-root .postcard .postcard-close { margin-top: 8px; width: 100%; height: 28px; border: 2px solid var(--line); border-radius: 9px; background: #fff; font-weight: 700; font-size: 11.5px; cursor: pointer; }
+
+/* ---------- diary ---------- */
+#dshpet-root .diary { width: 326px; top: 16px; padding: 12px; z-index: 23; max-height: 276px; display: flex; flex-direction: column; }
+#dshpet-root .diary-list { margin-top: 8px; overflow-y: auto; padding-right: 3px; display: flex; flex-direction: column; gap: 8px; }
+#dshpet-root .diary-entry { border: 1.8px solid #e6dfd0; border-radius: 9px; padding: 7px 8px; background: #fffef9; }
+#dshpet-root .diary-entry h4 { margin: 0 0 3px; font-size: 11.5px; }
+#dshpet-root .diary-entry p { margin: 0; font-size: 11px; line-height: 1.55; color: var(--ink-soft); white-space: pre-wrap; }
+#dshpet-root .diary-empty { font-size: 11.5px; color: #8b8f9c; padding: 14px 4px; text-align: center; }
+
+/* ---------- settings ---------- */
+#dshpet-root .settings { width: 322px; top: 14px; padding: 12px; z-index: 26; }
+#dshpet-root .settings-body { margin-top: 10px; display: flex; flex-direction: column; gap: 9px; }
+#dshpet-root .switch-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 600; }
+#dshpet-root .switch { width: 42px; height: 24px; flex: none; border: 2px solid var(--line); border-radius: 999px; background: #eee7d8; padding: 0; cursor: pointer; position: relative; transition: background 150ms; }
+#dshpet-root .switch span { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 1.5px solid var(--line); transition: transform 150ms cubic-bezier(.2, 1.2, .4, 1); }
+#dshpet-root .switch[aria-checked="true"] { background: var(--blue); }
+#dshpet-root .switch[aria-checked="true"] span { transform: translateX(18px); }
+#dshpet-root .field { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 600; }
+#dshpet-root .field-label { flex: none; }
+#dshpet-root .seg { display: flex; border: 2px solid var(--line); border-radius: 9px; overflow: hidden; }
+#dshpet-root .seg button { border: 0; border-right: 1.5px solid var(--line); background: #fff; height: 25px; padding: 0 9px; font-family: var(--font); font-size: 10.5px; font-weight: 700; cursor: pointer; }
+#dshpet-root .seg button:last-child { border-right: 0; }
+#dshpet-root .seg button[aria-pressed="true"] { background: var(--blue); color: #fff; }
+#dshpet-root .seg-skin button { display: inline-flex; align-items: center; gap: 5px; }
+#dshpet-root .seg-skin i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--line); flex: none; }
+#dshpet-root .hint { margin: 1px 0 0; font-size: 10px; line-height: 1.5; color: #8b8f9c; }
+#dshpet-root .settings-actions { display: flex; }
+#dshpet-root #dshpet-opt-reset { flex: none; color: #b4523c; }
+
+/* scrollbars */
+#dshpet-root .diary-list::-webkit-scrollbar { width: 6px; }
+#dshpet-root .diary-list::-webkit-scrollbar-thumb { background: #d8d0c0; border-radius: 3px; }
+
+
+/* ---------- travel note sitting on the edge ---------- */
+#dshpet-root .travel-note {
+  position: absolute;
+  pointer-events: auto;
+  left: 50%;
+  top: 84px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px 7px 8px;
+  background: #fffaf0;
+  border: 2.5px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  z-index: 7;
+  animation: dshpet-bubble-in 220ms cubic-bezier(.2, 1.3, .4, 1) both;
+}
+#dshpet-root .travel-note::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 10px;
+  height: 10px;
+  background: #fffaf0;
+  border-right: 2.5px solid var(--line);
+  border-bottom: 2.5px solid var(--line);
+  transform: translateX(-50%) rotate(45deg);
+}
+#dshpet-root .travel-note[data-mode="desk"] { top: 92px; }
+#dshpet-root .travel-note[data-mode="perch"] { top: 96px; }
+#dshpet-root .travel-note .travel-icon {
+  width: 26px; height: 26px; flex: none; display: grid; place-items: center;
+  border: 2px solid var(--line); border-radius: 8px; background: #ffe9bd; font-size: 14px;
+}
+#dshpet-root .travel-note .travel-copy { display: flex; flex-direction: column; gap: 1px; }
+#dshpet-root .travel-note b { font-size: 11.5px; }
+#dshpet-root .travel-note span { font-size: 9.5px; color: #8b8f9c; }

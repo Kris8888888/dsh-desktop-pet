@@ -1,0 +1,16 @@
+<!doctype html><meta charset="utf-8">
+<style>body{margin:0;background:#eef1f6;font:11px -apple-system}.row{display:flex}.tile{position:relative;width:170px;height:150px;overflow:hidden}
+.tile canvas{position:absolute;left:-295px;width:760px;height:300px}.tile.desk canvas{top:-140px}.tile.perch canvas{top:-110px}
+.tile.perch{background:linear-gradient(#eef1f6 0 80px,#fff 80px)}.tile.perch::after{content:"";position:absolute;left:0;right:0;top:80px;height:1px;background:#bbb}.l{position:absolute;left:6px;bottom:4px;color:#888}</style>
+<div id="p"></div>
+<script type="module">
+import { PetArt } from "../../pet/art.js";
+const q=new URLSearchParams(location.search), ch=q.get("c")||"whale", mode=q.get("m")||"desk", T=+(q.get("t")||1), size=+(q.get("s")||1), skin=q.get("k")||"classic";
+const poses=["idle","blink","happy","petted","poke","angry","eat","hungry","sick","sleep","type","wait","celebrate","sweat","wave","drag"];
+const p=document.getElementById("p"); let row;
+poses.forEach((pose,i)=>{ if(i%8==0){row=document.createElement("div");row.className="row";p.append(row)}
+ const t=document.createElement("div");t.className="tile "+mode;const c=document.createElement("canvas");t.append(c);
+ const l=document.createElement("div");l.className="l";l.textContent=pose;t.append(l);row.append(t);
+ const art=new PetArt(c); const v={character:ch,pose,mode,clipCss:190,lookX:1,lookY:0.3,particles:[],size,skin};
+ const go=()=>{art.draw({...v,t:1000.2}); art.draw({...v,t:1000.2+T});}; go(); setTimeout(go,1500); });
+</script>

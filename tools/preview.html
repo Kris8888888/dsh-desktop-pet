@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --ink:#1f232e; --muted:#8a8f9c; --line:#e7e3da; --blue:#5b7cff; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; color:var(--ink); background:#fbfaf7; }
+  body { display:flex; overflow:hidden; }
+  .rail { width:296px; flex:none; background:#f1eee7; border-right:1px solid var(--line); padding:56px 12px 12px; display:flex; flex-direction:column; gap:2px; }
+  .brand { display:flex; align-items:center; gap:8px; padding:0 8px 14px; font-weight:800; letter-spacing:.4px; font-size:13px; }
+  .brand .mark { width:24px; height:24px; border-radius:8px; background:var(--blue); display:grid; place-items:center; color:#fff; font-size:13px; }
+  .nav { display:flex; align-items:center; gap:9px; height:34px; padding:0 10px; border-radius:9px; color:#4e5360; font-size:13px; }
+  .nav.active { background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.05); color:var(--ink); font-weight:600; }
+  .section { margin:16px 10px 6px; font-size:10px; color:#9a9eaa; letter-spacing:.8px; }
+  .row { height:30px; display:flex; align-items:center; gap:8px; padding:0 10px; font-size:12px; color:#5f6472; border-radius:8px; }
+  .row .dot { width:6px; height:6px; border-radius:50%; background:#c9c4b8; }
+  .row .t { flex:1; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+  .row .time { font-size:10px; color:#a5a9b3; }
+  .main { flex:1; display:flex; flex-direction:column; min-width:0; }
+  .topbar { height:52px; flex:none; display:flex; align-items:center; gap:12px; padding:0 24px; border-bottom:1px solid #efebe1; background:rgba(251,250,247,.85); }
+  .crumb { font-size:12px; color:#8a8f9c; }
+  .crumb b { color:var(--ink); font-weight:650; }
+  .pill { margin-left:auto; height:24px; padding:0 10px; border-radius:999px; background:#eef4ff; color:#3f5fd8; font-size:11px; display:flex; align-items:center; gap:6px; font-weight:600; }
+  .chat { flex:1; overflow:hidden; padding:28px 64px 20px; display:flex; flex-direction:column; gap:16px; background:linear-gradient(#fbfaf7,#f7f5ef); }
+  .msg { display:flex; gap:12px; }
+  .avatar { width:28px; height:28px; border-radius:9px; background:#dbe5ff; flex:none; display:grid; place-items:center; font-size:12px; color:#3350d9; font-weight:700; }
+  .avatar.me { background:#ffe4d6; color:#b45230; }
+  .bubble { background:#fff; border:1px solid #ece7dc; border-radius:12px; padding:12px 14px; font-size:13px; line-height:1.7; max-width:760px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
+  .bubble p { margin:0 0 8px; } .bubble p:last-child { margin:0; }
+  .bubble code { background:#f2efe7; padding:1px 5px; border-radius:4px; font-size:12px; }
+  .composer { margin:0 64px 26px; border:1px solid #e6e0d3; border-radius:14px; background:#fff; box-shadow:0 6px 18px rgba(31,35,46,.06); padding:14px 14px 10px; color:#a5a9b3; font-size:13px; }
+  .composer .bar { display:flex; gap:8px; margin-top:16px; align-items:center; }
+  .chip { height:22px; padding:0 8px; border-radius:6px; background:#f5f2ea; color:#7a7f8c; font-size:11px; display:flex; align-items:center; }
+  .send { margin-left:auto; width:26px; height:26px; border-radius:50%; background:var(--blue); color:#fff; display:grid; place-items:center; font-size:14px; }
+  .steps { font-size:11px; color:#8a8f9c; display:flex; gap:14px; padding:0 2px 8px; }
+  .steps b { color:#3f5fd8; }
+</style>
+</head>
+<body>
+  <aside class="rail">
+    <div class="brand"><span class="mark">D</span> deepseek HARNESS</div>
+    <div class="nav active">对话</div>
+    <div class="nav">插件</div>
+    <div class="nav">插件市场</div>
+    <div class="nav">自动化任务</div>
+    <div class="section">工作区</div>
+    <div class="row"><span class="dot"></span><span class="t">DeepSeek Harness 工作区</span></div>
+    <div class="row"><span class="dot" style="background:#f2b84b"></span><span class="t">桌面宠物功能开发</span><span class="time">刚刚</span></div>
+    <div class="row"><span class="dot"></span><span class="t">客户版成员导出与插件…</span><span class="time">8 分钟</span></div>
+    <div class="row"><span class="dot"></span><span class="t">安装 motiontemplate 技…</span><span class="time">18 小时</span></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">工作区 / <b>桌面宠物功能开发</b></div>
+      <div class="pill">DeepSeek-V4.1-Flash</div>
+    </div>
+    <div class="chat">
+      <div class="msg"><div class="avatar">你</div><div class="bubble"><p>给客户端加一个宠物的功能吧，参考 clawd-on-desk。要提供情绪价值，有各种 AI 宠物的行为交互。</p><p>平时它趴在客户端窗口顶边，离右边约 150 点；窗口移动、缩放时它跟着走。</p></div></div>
+      <div class="msg"><div class="avatar">D</div><div class="bubble"><p>收到。先搭一个真实的浮窗，把姿势、状态机和 DSH 事件都接进去。</p><p>目标：关掉时零开销；开着时发呆 &lt; 0.35%，干活 &lt; 1.5%。</p></div></div>
+      <div class="steps"><span>✓ 渲染器</span><span>✓ 窗口跟随</span><span><b>· 正在接线</b></span></div>
+      <div class="msg"><div class="avatar me">你</div><div class="bubble"><p>每个姿势都渲染成图片逐个看一遍。</p></div></div>
+    </div>
+    <div class="composer">
+      按 Enter 发送，Shift+Enter 换行
+      <div class="bar"><span class="chip">完全权限</span><span class="chip">@文件</span><div class="send">↑</div></div>
+    </div>
+  </main>
+  <style>/* dev harness: virtual-time screenshots freeze CSS animations mid-flight */
+  #dshpet-root *, #dshpet-root *::after, #dshpet-root *::before { animation-delay: 0s !important; animation-duration: .001s !important; }
+  </style>
+  <div id="dshpet-slot" style="position:fixed;inset:0;pointer-events:none;z-index:40"></div>
+  <script src="./preview.js"></script>
+</body>
+</html>

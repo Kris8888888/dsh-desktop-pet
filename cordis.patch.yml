@@ -1,0 +1,4 @@
+# dsh-desktop-pet: one Host row for the sprite route plus the client overlay.
+- insert:
+    - id: dsh-desktop-pet
+      name: dsh-desktop-pet

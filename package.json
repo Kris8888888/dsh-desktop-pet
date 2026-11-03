@@ -1,0 +1,58 @@
+{
+  "name": "dsh-desktop-pet",
+  "version": "2.0.0",
+  "description": "A pet for DeepSeek Harness: a whale or a pixel crab in the corner of the DSH window that reacts to your sessions, eats the tokens your turns spend, keeps a diary and brings postcards back from its travels.",
+  "type": "module",
+  "license": "MIT",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "README.zh.md",
+    "client.js",
+    "cordis.patch.yml",
+    "icon.svg",
+    "index.js",
+    "lib",
+    "locale/*.json",
+    "screenshots.json"
+  ],
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "check": "node tools/build.mjs && node --check client.js"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek",
+    "deepseek-harness",
+    "desktop-pet",
+    "pet",
+    "whale",
+    "companion"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kris8888888/dsh-desktop-pet.git"
+  },
+  "homepage": "https://github.com/Kris8888888/dsh-desktop-pet#readme",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  }
+}
