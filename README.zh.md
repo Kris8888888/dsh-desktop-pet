@@ -1,6 +1,14 @@
 # 桌面宠物 dsh-desktop-pet
 
-给 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的小宠物：一只 DeepSeek 风格的小鲸鱼，或者一只像素小螃蟹，待在 DSH 窗口右下角，跟着你的对话做出反应。
+给 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的小宠物：一只 DeepSeek 风格的小鲸鱼，或者一只像素小螃蟹，扒在 DSH 输入框的上沿，跟着你的对话做出反应。
+
+![扒在输入框上](screenshots/in-window.png)
+
+| 右键菜单 | 设置页 |
+| --- | --- |
+| ![右键菜单](screenshots/menu.png) | ![设置页](screenshots/settings.png) |
+
+鲸鱼的各种状态（干活、等你确认、完成、出错、被摸、饿了、睡觉……）：
 
 ![鲸鱼的各种状态](screenshots/whale-poses.png)
 
@@ -19,7 +27,7 @@ dsh plugin add git+https://github.com/Kris8888888/dsh-desktop-pet.git
 - **跟着对话走**：助手在干活时它跟着忙；有操作等你确认时它头上挂铃铛（点它直接跳到那个对话）；一轮做完插小旗；出错头顶冒红点。
 - **吃 token**：每轮对话花掉的 `输入 + 输出` token 就是它的饭（读缓存不算）。会饿、会困、会生病。
 - **右键菜单**：喂零食（每天 3 份）、生病了喂药、摸摸它、让它出门玩（40–120 分钟后带明信片回来）、看状态、看日记。
-- **拖动**：可以拖到窗口里任何位置，会记住。
+- **扒在输入框上**：输入框挪到哪它跟到哪；页面上没有输入框时站在右下角。也可以拖到窗口里任何位置，它会待在那；拖回输入框附近松手会重新扒上去。
 - **设置**：鲸鱼或螃蟹、四档大小、每个角色三种配色、到点提醒（中午、久坐、下班、深夜）、被摸时冒爱心。
 
 状态和日记存在本机浏览器里，不会上传。

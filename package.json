@@ -1,7 +1,7 @@
 {
   "name": "dsh-desktop-pet",
   "version": "2.0.0",
-  "description": "A pet for DeepSeek Harness: a whale or a pixel crab in the corner of the DSH window that reacts to your sessions, eats the tokens your turns spend, keeps a diary and brings postcards back from its travels.",
+  "description": "A pet for DeepSeek Harness: a whale or a pixel crab perched on the DSH input box that reacts to your sessions, eats the tokens your turns spend, keeps a diary and brings postcards back from its travels.",
   "type": "module",
   "license": "MIT",
   "main": "index.js",

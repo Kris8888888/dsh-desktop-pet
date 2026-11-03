@@ -32,7 +32,14 @@ cp "$BACKUP/Info.plist.orig" "$PLIST"
 /usr/libexec/PlistBuddy -c "Set :ElectronAsarIntegrity:Resources/app.asar:hash $HASH" "$PLIST"
 
 echo "重新签名（ad-hoc）…"
+# 先整体 ad-hoc 签一遍（helper / framework 都要有新签名），再单独给外层写死
+# designated requirement。不写的话 ad-hoc 签名的 DR 会被钉成当前二进制的
+# cdhash，Squirrel 升级时拿它校验新版本必然失败：
+#   Code signature ... did not pass validation: code failed to satisfy specified code requirement(s)
+# 钉成 identifier 之后，官方新版（同样是 com.deepseek.dsh）就能通过校验，
+# DSH 升级不会被宠物挡掉；升级后重跑一次本脚本把宠物装回去即可。
 codesign --force --deep --sign - "$APP" >/dev/null 2>&1
+codesign --force --sign - -r='designated => identifier "com.deepseek.dsh"' "$APP" >/dev/null 2>&1
 codesign --verify --deep --strict "$APP"
 
 echo "安装客户端插件 …"

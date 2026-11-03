@@ -1,1 +1,7 @@
-["screenshots/whale-poses.png", "screenshots/whale-perch.png", "screenshots/skins.png", "screenshots/crab-poses.png"]
+[
+ "screenshots/in-window.png",
+ "screenshots/menu.png",
+ "screenshots/settings.png",
+ "screenshots/whale-poses.png",
+ "screenshots/skins.png"
+]

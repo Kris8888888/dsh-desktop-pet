@@ -530,7 +530,10 @@ function drawWhale(g, f) {
   const t = f.t;
   const a = f.a;
   const skinKey = SKINS.whale[f.skin] ? f.skin : "classic";
-  const name = WHALE_SPRITE[p] ?? "idle";
+  // 扒在边上睡觉 / 生病：「趴着睡」「团成一团」两张图身子贴地、尾巴放平，边线一裁只剩个圆脑袋；
+  // 改用平时那张（尾巴翘着），眼睛画成闭着
+  const restingOnEdge = f.perch && (p === "sleeping" || p === "sick");
+  const name = restingOnEdge ? "idle" : WHALE_SPRITE[p] ?? "idle";
   const meta = SPRITE_META[name];
   const img = spriteImage(name, skinKey);
   // 图还没加载完：先用矢量版顶一下
@@ -577,11 +580,13 @@ function drawWhale(g, f) {
   g.filter = "none";
 
   // 眨眼：idle 那张图上把眼睛盖成身体色，画一道闭眼弧
-  if ((p === "blink" || (p === "idle" && t % 4.7 < 0.13)) && meta.eye) {
+  if ((restingOnEdge || p === "blink") && meta.eye) {
     const [ex, ey, ew, eh] = meta.eye;
     const cx = x0 + (ex + ew / 2) * u;
     const cy = y0 + (ey + eh / 2) * u;
+    if (p === "sick") g.filter = "saturate(35%) brightness(1.08)";   // 眼皮跟身子一起褪色
     oval(g, cx, cy, (ew / 2) * u + 0.8, (eh / 2) * u + 0.8, LID[skinKey]);
+    g.filter = "none";
     g.strokeStyle = skinKey === "light" ? "#2B5C9E" : "#0A1D45";
     g.lineWidth = 1.6;
     g.lineCap = "round";

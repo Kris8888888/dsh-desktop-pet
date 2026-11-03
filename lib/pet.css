@@ -37,7 +37,8 @@
   position: relative;
   width: 760px;
   height: 420px;
-  overflow: hidden;
+  /* 不裁：宠物在右下角时，菜单/面板会往上超出舞台；外层 #dshpet-root 已经按窗口边裁了 */
+  overflow: visible;
 }
 
 #dshpet-root #dshpet-pet {

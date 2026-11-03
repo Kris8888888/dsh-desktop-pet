@@ -933,8 +933,10 @@ class PetApp {
     // happening, 15 fps while DSH works, 24 fps only for particles. This keeps
     // the pet inside the 0.35% / 1.5% CPU budget instead of burning a 60 Hz
     // requestAnimationFrame slot on a transparent window.
-    const targetFps = this.runtime.particles.length > 0 ? 20 : busy ? 10 : 2;
     this.updateLifetime(now);
+    // 眨眼那一下要画得快，不然 2 fps 下闭着的眼会挂半秒，看着像在打瞌睡
+    const blinking = performance.now() < this.runtime.blinkUntil + 200;
+    const targetFps = this.runtime.particles.length > 0 ? 20 : busy || blinking ? 10 : 2;
     const t = ts / 1000;
     const pose = this.currentPose(now);
     this.updateParticles(elapsed);
@@ -1009,7 +1011,7 @@ class PetApp {
       this.runtime.lookY *= 0.94;
     }
     if (this.runtime.nextBlinkAt && performance.now() > this.runtime.nextBlinkAt && !this.life.state.sleeping) {
-      this.runtime.blinkUntil = performance.now() + 600;
+      this.runtime.blinkUntil = performance.now() + 180;
       this.runtime.nextBlinkAt = performance.now() + 3000 + Math.random() * 4200;
     }
   }
@@ -1055,6 +1057,10 @@ class PetApp {
       const overUi = Boolean(event.target.closest?.(".panel, .bubble, .travel-note"));
       const overPet = this.hitTest(event.clientX, event.clientY) !== null;
       this.setInteractive(overUi || overPet || this.runtime.menuOpen || this.runtime.drag);
+      if (overPet && !this.hovering) {
+        this.hovering = true;
+        this.onHoverEnter();
+      } else if (!overPet) this.hovering = false;
       if (this.dragStart && !this.runtime.drag) {
         const dx = event.clientX - this.dragStart.x;
         const dy = event.clientY - this.dragStart.y;
@@ -1148,12 +1154,55 @@ class PetApp {
         this.stroke.at = now;
         if (!this.life.state.sleeping) {
           this.doPet(true);
-          this.say("呼噜呼噜…");
+          this.strokeReact();
         }
       }
     }
     if (dir !== 0) this.stroke.dir = dir;
     this.stroke.lastX = x;
+  }
+
+  /** 鼠标刚落到宠物身上：挥挥手打个招呼，偶尔说一句自己的状况（45 秒内只一次） */
+  onHoverEnter() {
+    const now = Date.now();
+    const s = this.life?.state;
+    if (!s || now - (this.lastHoverAt ?? 0) < 45_000) return;
+    if (s.sleeping || s.travel || this.runtime.working || this.runtime.waiting || this.runtime.drag || this.uiOpen()) return;
+    this.lastHoverAt = now;
+    this.runtime.waveUntil = now + 1300;
+    if (Math.random() < 0.6) this.say(this.hoverLine(s), { duration: 2400 });
+  }
+
+  hoverLine(s) {
+    const pick = (list) => list[Math.floor(Math.random() * list.length)];
+    if (s.sick) return "我有点不舒服…";
+    if (s.hunger < 30) return pick(["肚子饿了…有吃的吗？", "咕噜咕噜…是我的肚子。"]);
+    if (s.energy < 25) return pick(["好困…", "眼皮在打架…"]);
+    if (s.mood < 35) return "今天有点闷…陪我玩会儿？";
+    if (s.intimacy > 70) return pick(["你来啦！", "在呢在呢～", "就等你了。"]);
+    return pick(["嗨～", "嗯？", "要摸摸头吗？", "在呢。"]);
+  }
+
+  /** 来回划着摸头：越摸越开心，台词跟着变；5 秒内只说一句，免得一直刷同一句 */
+  strokeReact() {
+    const now = Date.now();
+    const s = this.life.state;
+    this.strokeCount = now - (this.strokeLastAt ?? 0) < 8000 ? (this.strokeCount ?? 0) + 1 : 1;
+    this.strokeLastAt = now;
+    if (now - (this.strokeSayAt ?? 0) < 5000) return;
+    this.strokeSayAt = now;
+    const pick = (list) => list[Math.floor(Math.random() * list.length)];
+    let line;
+    if (s.sick) line = "谢谢…好像好一点了。";
+    else if (s.hunger < 30) line = pick(["摸头不顶饿呀…", "要是再来块零食就好了。"]);
+    else if (this.strokeCount >= 4) {
+      this.runtime.pettedUntil = now + 2600;
+      line = pick(["最喜欢你了！", "要被摸睡着了…", "再摸要变成鲸鱼饼了～"]);
+    } else if (this.strokeCount === 3) line = pick(["左边一点…对，就是那儿。", "嘿嘿嘿。"]);
+    else if (this.strokeCount === 2) line = pick(["好舒服～", "再摸摸～"]);
+    else line = "呼噜呼噜…";
+    if (this.life.state.character === "crab") line = line.replace("鲸鱼饼", "螃蟹饼");
+    this.say(line, { duration: 2600 });
   }
 
   handleClick(region, event) {
